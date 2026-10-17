@@ -1,80 +1,55 @@
 # Prajakta Thopte Portfolio
 
-A production-ready portfolio website for Prajakta Thopte, a Data Analyst and Business Analytics professional focused on Power BI, SQL, Python, Excel, and data-driven business decision support.
+A responsive portfolio starter for Prajakta Thopte, described in the project brief as a Data Analyst and Business Analytics professional focused on Power BI, SQL, Python, Excel, and data-driven business decision support.
 
-## Features
+## Current implementation
 
-- Responsive portfolio layout for desktop, tablet, and mobile devices
-- Custom navigation with anchor sections and mobile menu
-- Skills, experience, education, certification, and project sections
-- Project case-study pages with placeholder content for missing evidence
-- Contact form with validation and a mailto fallback when a backend email service is not configured
-- SEO metadata, favicon, robots.txt, and sitemap placeholder files
-- React + TypeScript + Vite project architecture for maintainability
+- React 19, TypeScript, and Vite
+- Responsive single-page layout with About, Skills, and Focus Areas sections
+- Navigation links and reduced-motion support
+- SEO description and social metadata without a fabricated production domain
+- Simple SVG favicon
+
+The current page uses only the skills and focus areas already documented in this repository. It does not claim specific employers, certifications, project outcomes, or performance metrics. Add those only after they are verified and approved by the portfolio owner.
 
 ## Tech stack
 
-- React 19
+- React
 - TypeScript
 - Vite
-- Tailwind CSS
-- React Router
-- Lucide React
+- Tailwind CSS tooling (configured in Vite)
+- Custom CSS for the current layout
 
 ## Local development
 
-1. Install dependencies:
+1. Install a supported Node.js version and npm.
+2. Install dependencies:
+   ```bash
    npm install
-2. Start the development server:
+   ```
+3. Start the development server:
+   ```bash
    npm run dev
-3. Open the local URL reported by Vite in the browser.
+   ```
+4. Open the local URL printed by Vite.
 
-## Production build
+## Build and lint
 
-1. Create a production build:
-   npm run build
-2. Preview the production build locally:
-   npm run preview
+```bash
+npm run build
+npm run lint
+```
 
-## Deployment
+These commands are documented for local verification; they have not been run as part of this repository review.
 
-This portfolio is ready to deploy to Vercel as a Vite single-page application. `vercel.json` rewrites direct navigation to client-side routes (such as `/projects/retail-analysis`) to the app entry point.
+## Deployment checklist
 
-Vercel project settings:
+- Confirm the portfolio owner approves the content, design, and public release.
+- Add verified project case studies, education, work history, certifications, and contact details where applicable.
+- Configure the real production domain before adding canonical URL, Open Graph URL, sitemap, or robots metadata.
+- Test the production build and direct URL access on Vercel before sharing the site.
+- Do not add private credentials or sensitive personal information to the repository.
 
-- Root directory: the folder containing this `package.json` (the project root)
-- Framework preset: Vite
-- Install command: `npm install`
-- Build command: `npm run build`
-- Output directory: `dist`
+## Developer
 
-No environment variables are currently required. The contact form uses a `mailto:` fallback, and the app does not read `import.meta.env` values. Do not add secrets as `VITE_*` variables; Vite exposes those values in client-side bundles. If a server-side email integration is added later, configure its credentials as server-only Vercel environment variables.
-
-After choosing the production domain, replace the `example.com` placeholder in `index.html`, `public/robots.txt`, and `public/sitemap.xml`.
-
-## Contact form integration
-
-The current form uses a `mailto:` fallback because no production email backend has been configured.
-
-## Verification report
-
-Completed functionality:
-
-- Responsive portfolio sections and navigation
-- Home, About, Skills, Projects, Experience, Education, Contact, and Footer content
-- Project detail pages with placeholder evidence states
-- Contact form validation and mailto fallback
-- 404 page for unmatched routes
-- Basic SEO metadata and favicon configuration
-- Local build and lint checks executed
-
-Unresolved issues and required owner actions:
-
-- Project files, notebooks, dashboards, screenshots, and verified findings remain pending confirmation
-- Exact education dates and certification details should be verified before public release
-- Production domain and canonical URL should be chosen before deployment
-- Real email service integration should be configured once a provider is selected
-
-## Important note on project evidence
-
-The portfolio intentionally preserves the résumé information and clearly labels missing project details as placeholders. This avoids making unsupported factual claims about dashboards, dataset sizes, rubric metrics, performance improvements, or financial impact.
+Mohd Kamran Siddiquee — https://github.com/skamran0786
