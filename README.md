@@ -1,54 +1,154 @@
-# Prajakta Thopte Portfolio
+# Prajakta Thopte — Portfolio
 
-A responsive portfolio starter for Prajakta Thopte, described in the project brief as a Data Analyst and Business Analytics professional focused on Power BI, SQL, Python, Excel, and data-driven business decision support.
+A single-page portfolio for **Prajakta Thopte**, a Data Analyst and Business Analytics
+professional working with Power BI, SQL, Python, and Excel.
 
-## Current implementation
+The site presents three things: a short positioning statement, the toolkit, and the
+areas of focus. It is a static front end — no backend, no database, no API keys, and
+no runtime dependencies beyond React itself.
 
-- React 19, TypeScript, and Vite
-- Responsive single-page layout with About, Skills, and Focus Areas sections
-- Navigation links and reduced-motion support
-- SEO description and social metadata without a fabricated production domain
-- Simple SVG favicon
+## Table of contents
 
-The current page uses only the skills and focus areas already documented in this repository. It does not claim specific employers, certifications, project outcomes, or performance metrics. Add those only after they are verified and approved by the portfolio owner.
+- [Content policy](#content-policy)
+- [Tech stack](#tech-stack)
+- [Requirements](#requirements)
+- [Getting started](#getting-started)
+- [Scripts](#scripts)
+- [Linting and type checking](#linting-and-type-checking)
+- [Environment variables](#environment-variables)
+- [Project structure](#project-structure)
+- [Deployment](#deployment)
+- [Developer](#developer)
+
+## Content policy
+
+Everything shown on the page is limited to what is already documented in this
+repository. The site deliberately makes **no claims** about employers,
+certifications, project outcomes, or performance metrics — the "Analysis record"
+table in the hero describes the analysis process, not results.
+
+Add real case studies, education, work history, certifications, and contact details
+only once they are verified and approved by the portfolio owner.
 
 ## Tech stack
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS tooling (configured in Vite)
-- Custom CSS for the current layout
+| Layer | Choice |
+| --- | --- |
+| UI | React 19 |
+| Language | TypeScript (strict) |
+| Build tool | Vite 8 |
+| Styling | Hand-authored CSS in `src/styles.css` (no CSS framework) |
+| Linting | oxlint |
 
-## Local development
+All layout and theming lives in `src/styles.css`, built on CSS custom properties under
+`:root`. There is no utility-class framework in the build, so the shipped CSS contains
+only the styles this page actually uses.
 
-1. Install a supported Node.js version and npm.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open the local URL printed by Vite.
+## Requirements
 
-## Build and lint
+- **Node.js `^20.19.0` or `>=22.12.0`** (required by Vite 8)
+- npm (the lockfile is `package-lock.json`, so npm is the expected client)
+
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Vite prints a local URL (by default `http://localhost:5173`) — open it in a browser.
+The dev server supports hot module replacement.
+
+To check the production build locally:
 
 ```bash
 npm run build
-npm run lint
+npm run preview
 ```
 
-These commands are documented for local verification; they have not been run as part of this repository review.
+`npm run build` writes static assets to `dist/`. `npm run preview` serves that folder
+so you can verify the real, minified output before deploying.
 
-## Deployment checklist
+## Scripts
 
-- Confirm the portfolio owner approves the content, design, and public release.
-- Add verified project case studies, education, work history, certifications, and contact details where applicable.
-- Configure the real production domain before adding canonical URL, Open Graph URL, sitemap, or robots metadata.
-- Test the production build and direct URL access on Vercel before sharing the site.
-- Do not add private credentials or sensitive personal information to the repository.
+| Script | Runs | Purpose |
+| --- | --- | --- |
+| `npm run dev` | `vite` | Start the dev server with HMR |
+| `npm run build` | `tsc -b --noEmit && vite build` | Type check, then emit the production bundle to `dist/` |
+| `npm run preview` | `vite preview` | Serve the contents of `dist/` locally |
+| `npm run lint` | `oxlint` | Lint with the rules in `.oxlintrc.json` |
+| `npm run typecheck` | `tsc -b --noEmit` | Type check only — no output, no bundling |
+
+## Linting and type checking
+
+```bash
+npm run lint
+npm run typecheck
+```
+
+Both are expected to exit cleanly. `typecheck` uses `tsc -b` because the project is
+split into TypeScript project references (`tsconfig.app.json` for `src/`,
+`tsconfig.node.json` for `vite.config.ts`); each referenced config already sets
+`noEmit`, so this checks types without writing files. Strict mode is enabled in both.
+
+## Environment variables
+
+The application requires **no environment variables**. See [.env.example](.env.example)
+for the documented template.
+
+`.gitignore` excludes `.env` and `.env.*` while explicitly allowing `.env.example`, so
+the template is tracked and real secrets are not. If a server-side API is added later,
+keep those credentials in your hosting provider's environment settings rather than in
+the repository, and expose browser-safe values only through Vite's `VITE_` prefix.
+
+## Project structure
+
+```
+.
+├── index.html                 # HTML shell: metadata, Open Graph, font preconnect
+├── public/
+│   └── favicon.svg            # SVG favicon
+├── src/
+│   ├── main.tsx               # React entry point
+│   ├── App.tsx                # Page composition
+│   ├── styles.css             # Design tokens + all component styles
+│   ├── components/
+│   │   ├── Hero.tsx           # Hero copy + "Analysis record" specimen table
+│   │   ├── Section.tsx        # Shared numbered section shell
+│   │   ├── SiteHeader.tsx     # Sticky masthead + in-page navigation
+│   │   └── SiteFooter.tsx     # Footer
+│   ├── data/
+│   │   └── content.ts         # All page copy and section metadata
+│   └── hooks/
+│       ├── useActiveSection.ts    # Scroll spy driving `aria-current`
+│       └── useRevealOnScroll.ts   # IntersectionObserver scroll reveal
+├── .env.example
+├── .oxlintrc.json
+├── vercel.json
+├── tsconfig.json              # Project references root
+├── tsconfig.app.json          # App code (strict)
+├── tsconfig.node.json         # Build config (strict)
+└── vite.config.ts
+```
+
+Editing page copy? Everything lives in `src/data/content.ts` — the components read
+from it, so text changes do not require touching JSX.
+
+## Deployment
+
+The project is a static SPA and deploys to any static host. Vercel is the current
+target:
+
+1. Import the repository into Vercel.
+2. Accept the detected framework preset (**Vite**). Build command `npm run build`,
+   output directory `dist`.
+3. No environment variables are needed.
+4. [vercel.json](vercel.json) rewrites all unmatched paths to `/index.html` so in-page
+   anchors and direct URL access resolve correctly.
+
+Before going live, confirm the portfolio owner approves the content and add the real
+production domain — only then add canonical URL, `og:url`, sitemap, and `robots`
+metadata, since those must not point at a placeholder domain.
 
 ## Developer
 

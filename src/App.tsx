@@ -1,77 +1,25 @@
-const skills = [
-  "Power BI",
-  "SQL",
-  "Python",
-  "Microsoft Excel",
-  "Data Analysis",
-  "Business Analytics",
-];
-
-const focusAreas = [
-  {
-    number: "01",
-    title: "Data analysis",
-    description:
-      "Explore datasets, identify patterns, and turn information into clear findings for business decisions.",
-  },
-  {
-    number: "02",
-    title: "Reporting and dashboards",
-    description:
-      "Organize key metrics into readable reports and dashboards that help people understand performance.",
-  },
-  {
-    number: "03",
-    title: "Business insights",
-    description:
-      "Connect analytical findings to practical questions, priorities, and opportunities for improvement.",
-  },
-];
+import { Hero } from "./components/Hero";
+import { Section } from "./components/Section";
+import { SiteFooter } from "./components/SiteFooter";
+import { SiteHeader } from "./components/SiteHeader";
+import { focusAreas, sections, skills } from "./data/content";
+import { useActiveSection } from "./hooks/useActiveSection";
+import { useRevealOnScroll } from "./hooks/useRevealOnScroll";
 
 export default function App() {
+  const activeSection = useActiveSection();
+  useRevealOnScroll();
+
   return (
-    <main>
-      <header className="site-header">
-        <a className="wordmark" href="#home" aria-label="Prajakta Thopte home">
-          PT<span>.</span>
-        </a>
-        <nav aria-label="Main navigation">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#focus">Focus areas</a>
-        </nav>
-      </header>
+    <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
 
-      <section className="hero" id="home">
-        <div className="hero-copy">
-          <p className="eyebrow"><span className="status-dot" /> DATA ANALYSIS · BUSINESS INTELLIGENCE</p>
-          <h1>Prajakta<br /><span>Thopte.</span></h1>
-          <p className="hero-summary">
-            Data Analyst &amp; Business Analytics professional focused on making
-            data easier to understand and useful for business decisions.
-          </p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#focus">Explore focus areas <span aria-hidden="true">↘</span></a>
-            <a className="text-link" href="#about">About me</a>
-          </div>
-        </div>
-        <div className="hero-art" aria-label="Abstract data visualization illustration" role="img">
-          <div className="art-orbit orbit-one" />
-          <div className="art-orbit orbit-two" />
-          <div className="art-core">
-            <span className="core-label">DATA</span>
-            <div className="bar-chart" aria-hidden="true"><i /><i /><i /><i /><i /></div>
-            <span className="core-caption">Find the signal.</span>
-          </div>
-          <span className="float-tag tag-one">Analysis</span>
-          <span className="float-tag tag-two">Insight</span>
-        </div>
-        <div className="hero-foot"><span>PORTFOLIO</span><span>DATA → CLARITY → DECISIONS</span></div>
-      </section>
+      <SiteHeader activeSection={activeSection} />
 
-      <section className="section about-section" id="about">
-        <div className="section-kicker">01 / ABOUT</div>
-        <div className="section-content">
+      <main id="main-content" tabIndex={-1}>
+        <Hero />
+
+        <Section {...sections.about}>
           <h2>Turning information<br />into <em>understanding.</em></h2>
           <p className="large-copy">
             I’m focused on data analysis, business analytics, reporting, and
@@ -84,23 +32,26 @@ export default function App() {
             Experience, certifications, and project results should be added
             only when verified and approved for publication.
           </p>
-        </div>
-      </section>
+        </Section>
 
-      <section className="section skills-section" id="skills">
-        <div className="section-kicker">02 / TOOLKIT</div>
-        <div className="section-content">
+        <Section {...sections.skills}>
           <h2>Tools for asking<br /><em>better questions.</em></h2>
-          <p className="section-intro">Core tools and subject areas highlighted in this profile.</p>
-          <div className="skill-list">
-            {skills.map((skill) => <span className="skill-chip" key={skill}>{skill}<span aria-hidden="true">↗</span></span>)}
-          </div>
-        </div>
-      </section>
+          <p className="section-intro">
+            Core tools and subject areas highlighted in this profile.
+          </p>
+          <ul className="skill-list">
+            {skills.map((skill, position) => (
+              <li className="skill-item" key={skill}>
+                <span className="skill-index">
+                  {String(position + 1).padStart(2, "0")}
+                </span>
+                <span className="skill-name">{skill}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
 
-      <section className="section focus-section" id="focus">
-        <div className="section-kicker">03 / FOCUS AREAS</div>
-        <div className="section-content">
+        <Section {...sections.focus}>
           <h2>From raw data<br />to <em>real direction.</em></h2>
           <div className="focus-grid">
             {focusAreas.map((item) => (
@@ -111,14 +62,10 @@ export default function App() {
               </article>
             ))}
           </div>
-        </div>
-      </section>
+        </Section>
+      </main>
 
-      <footer className="site-footer">
-        <a className="wordmark" href="#home">PT<span>.</span></a>
-        <p>Prajakta Thopte · Data Analysis &amp; Business Analytics</p>
-        <a className="back-top" href="#home">Back to top ↑</a>
-      </footer>
-    </main>
+      <SiteFooter />
+    </>
   );
 }
