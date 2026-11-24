@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { sectionOrder } from "../data/content";
 
-/**
- * Tracks which page section is currently in the middle of the viewport so the
- * masthead can flag it with `aria-current`.
- */
 export function useActiveSection() {
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const targets = ["home", ...sectionOrder]
@@ -15,11 +11,13 @@ export function useActiveSection() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible) setActiveSection(visible.target.id);
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.15, 0.4, 0.75] },
     );
 
     targets.forEach((target) => observer.observe(target));
